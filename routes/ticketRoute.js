@@ -6,8 +6,8 @@ const { createTicket, getAllTicket, getTicket, addDescription, openTicket } = re
 // Re-route into note router
 
 router.post("/", authMiddleware, createTicket);
-router.get("/get",  authMiddleware,  getAllTicket);
-router.get("/:id",  authMiddleware,  getTicket);
+router.get("/getallTicket",  authMiddleware,  getAllTicket);
+router.get("/singleticket/:id",  authMiddleware,  getTicket);
 router.post("/:id/desc", authMiddleware,  addDescription);
 router.put('/:id/open', openTicket);
 

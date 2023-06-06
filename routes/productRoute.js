@@ -11,8 +11,9 @@ const {
 } = require('../controller/productCtrl');
 const { isAdmin , authMiddleware} = require('../middlewares/authMiddleware');
 const router = express.Router();
+const formidable = require("express-formidable");
 
-router.post('/', authMiddleware, isAdmin, createProduct);
+router.post('/', authMiddleware, isAdmin,formidable(), createProduct);
 /* router.put('/upload/:id' , authMiddleware , isAdmin , 
 uploadPhoto.array('images',10),
 productImgResize,

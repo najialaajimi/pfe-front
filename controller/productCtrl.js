@@ -2,8 +2,10 @@ const Product = require("../models/productModels");
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
+const fs = require('fs')
 
-const createProduct = asyncHandler(async (req, res) => {
+
+/* const createProduct = asyncHandler(async (req, res) => {
   try {
     if (req.body.title) {
       req.body.slug = slugify(req.body.title);
@@ -13,7 +15,55 @@ const createProduct = asyncHandler(async (req, res) => {
   } catch (error) {
     throw new Error(error);
   }
-});
+}); */
+const createProduct = async (req, res) => {
+  try {
+    const{
+        title , slug , description, price , category, quantite,  tags ,brand
+    } = req.fields
+    const {photo} = req.files
+    //alidation
+switch (true) {
+    case !title:
+      return res.status(500).send({ error: "title is Required" });
+    case !description:
+      return res.status(500).send({ error: "Description is Required" });
+    case !price:
+      return res.status(500).send({ error: "Price is Required" });
+    case !category:
+      return res.status(500).send({ error: "Category is Required" });
+      case !tags:
+      return res.status(500).send({ error: "tags is Required" });
+      case !brand:
+        return res.status(500).send({ error: "brand is Required" });
+        case !quantite:
+      return res.status(500).send({ error: "Quantity is Required" });
+    case photo && photo.size > 1000000:
+      return res
+        .status(500)
+        .send({ error: "photo is Required and should be less then 1mb" });
+  }
+
+    const products = new Product({ ...req.fields, slug: slugify(title) });
+    if (photo) {
+        products.photo.data = fs.readFileSync(photo.path);
+        products.photo.contentType = photo.type;
+      }
+      await products.save();
+      res.status(201).send({
+        success: true,
+        message: "Product Created Successfully",
+        products,
+      });
+} catch (error) {
+    console.log(error);
+    res.status(500).send({
+        success:false,
+        error,
+        message: 'Error in creating Product'
+    })
+}
+};
 
 const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -232,8 +282,17 @@ const ajouter_vote = asyncHandler(async (req, res) => {
       }, total_vote:produit.total_vote+1}
      
 
-      
+     
     );
+    const update_vote_user= await User.findByIdAndUpdate({_id:_id},
+      {$push: {
+        vote_user: {
+          etat:true
+        },
+       
+      }}
+      
+      )
     res.json(update_vote);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });

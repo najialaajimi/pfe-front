@@ -40,12 +40,10 @@ var ProductSchema = new mongoose.Schema(
       default: 0 /* 
       select : false, bech matafichihomech */,
     },
-    images: [
-      {
-        public_id: String,
-        url: String,
-      },
-    ],
+    photo: {
+      data: Buffer,
+      contentType: String
+    },
     color: [
       {
         type: mongoose.Schema.Types.ObjectId,

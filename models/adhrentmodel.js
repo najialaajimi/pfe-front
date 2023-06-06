@@ -26,27 +26,38 @@ const Adherentschema = new mongoose.Schema({
         unique: true,
       },
 
-bureau:[{
-    bureau1:{
-        nom:{type:String},
-        code:{type:String,unique:true},
+      childrenL:[ {
+                     type: mongoose.Schema.Types.ObjectId,
+                     ref: "adherent",
+                 }],
+                 childrenR:[
+                     {
+                         type: mongoose.Schema.Types.ObjectId,
+                         ref: "adherent",
+                     }
+                 ],
+
+                gender:{
+                    type:String,
+                    default:"femme"
+                },
+// bureau:[{
+//     bureau1:{
+//         nom:{type:String},
+//         code:{type:String,unique:true},
         
-        extD:[{ type: mongoose.Schema.Types.ObjectId,
-            ref: "adherent"}],
-        extG: [{ type: mongoose.Schema.Types.ObjectId,
-            ref: "adherent"}],
-        linkD:[ {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "adherent",
-        }],
-        linkG:[
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "adherent",
-            }
-        ]
-    }
-}],
+//         childrenL:[ {
+//             type: mongoose.Schema.Types.ObjectId,
+//             ref: "adherent",
+//         }],
+//         childrenR:[
+//             {
+//                 type: mongoose.Schema.Types.ObjectId,
+//                 ref: "adherent",
+//             }
+//         ]
+//     }
+// }],
 
 
 

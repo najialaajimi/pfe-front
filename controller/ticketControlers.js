@@ -48,7 +48,7 @@ const addDescription = asyncHandler(async (req, res) => {
       throw new Error("Ticket non trouvé");
     }
     // Ajout de la nouvelle description
-    ticket.description.push({userId: _id, description });
+    ticket.description.push({ description });
     await ticket.save();
     res.json({result:ticket});
   } catch (error) {
